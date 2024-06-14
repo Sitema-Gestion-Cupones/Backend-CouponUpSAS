@@ -63,6 +63,8 @@ builder.Services.AddDbContext<CouponBaseContext>(options =>
     )
 );
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
 
 var app = builder.Build();
 
