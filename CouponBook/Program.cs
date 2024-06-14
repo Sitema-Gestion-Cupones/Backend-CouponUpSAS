@@ -7,6 +7,8 @@ using System.Text;
 using MimeKit.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using CouponBook.Utils;
+using CouponBook.Data;
 
 
 
@@ -74,7 +76,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 
 app.UseHttpsRedirection();
