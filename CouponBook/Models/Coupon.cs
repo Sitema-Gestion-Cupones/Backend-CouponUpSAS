@@ -27,7 +27,9 @@ namespace CouponBook.Models
 
         public MarketingUser? MarketingUser { get; set; }
 
-
+        public ICollection<CouponPermission>? CouponPermissions { get; set; }
+        public ICollection<Redemption>? Redemptions { get; set; }
+        public ICollection<UpdateLog>? UpdateLogs { get; set; }
         
     }
 }

@@ -16,8 +16,6 @@ namespace CouponBook.Models
 
         public Coupon? Coupon { get; set;} 
         public MarketingUser? MarketingUser { get; set;} 
-
-
         
     }
 }
