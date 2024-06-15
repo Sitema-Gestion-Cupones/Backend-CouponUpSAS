@@ -9,6 +9,22 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using CouponBook.Utils;
 using CouponBook.Data;
+using CouponBook.Repository.CouponPermissions;
+using CouponBook.Repository.Coupons;
+using CouponBook.Repository.CustomerUsers;
+using CouponBook.Repository.Invoices;
+using CouponBook.Repository.MarketingUsers;
+using CouponBook.Repository.Purchases;
+using CouponBook.Repository.Redemptions;
+using CouponBook.Repository.UpdateLogs;
+using CouponBook.Services.CouponPermissions;
+using CouponBook.Services.Coupons;
+using CouponBook.Services.CustomerUsers;
+using CouponBook.Services.Invoices;
+using CouponBook.Services.MarketingUsers;
+using CouponBook.Services.Purchases;
+using CouponBook.Services.Redemptions;
+using CouponBook.Services.UpdateLogs;
 
 
 
@@ -66,6 +82,28 @@ builder.Services.AddDbContext<CouponBaseContext>(options =>
 );
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+
+// Agregando Scoped Repository
+builder.Services.AddScoped<ICouponPermissionRepository, CouponPermissionRepository>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+builder.Services.AddScoped<ICustomerUserRepository, CustomerUserRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IMarketingUserRepository, MarketingUserRepository>();
+builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+builder.Services.AddScoped<IRedemptionRepository, RedemptionRepository>();
+builder.Services.AddScoped<IUpdateLogRepository, UpdateLogRepository>();
+
+
+// Agregando Scoped Services
+builder.Services.AddScoped<ICouponPermissionService, CouponPermissionService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<ICustomerUserService, CustomerUserService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IMarketingUserService, MarketingUserService>();
+builder.Services.AddScoped<IPurchaseService, PurchaseService>();
+builder.Services.AddScoped<IRedemptionService , RedemptionService >();
+builder.Services.AddScoped<IUpdateLogService, UpdateLogService>();
 
 
 var app = builder.Build();
