@@ -12,5 +12,10 @@ namespace CouponBook.Models
         public string? Email { get; set; }
         public DateTime DateBirth { get; set; }
         public string? Password { get; set; }
+
+
+        public ICollection<Purchase>? Purchases { get; set; }
+        public ICollection<Redemption>? Redemptions { get; set; }
+        public ICollection<Invoice>? Invoices { get; set; }
     }
 }

@@ -7,6 +7,13 @@ namespace CouponBook.Models
 {
     public class Purchase
     {
+        public int Id { get; set; }
+        public Decimal Value { get; set; }
+        public int CustomerUsersId { get; set; }
+
+        
+        public CustomerUser? CustomerUsers { get; set; }
+        public Redemption? Redemptions { get; set; }
         
     }
 }

@@ -15,8 +15,6 @@ namespace CouponBook.Models
         public int RedemptionsId { get; set; }
 
 
-
-
         public CustomerUser? CustomerUser { get; set; }
         public Redemption? Redemption { get; set; }
 
