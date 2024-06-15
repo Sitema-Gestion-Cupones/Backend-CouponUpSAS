@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CouponBook.Repository.CouponPermissions
+namespace CouponBook.Repository.CustomerUsers
 {
-    public class CouponPermissionsRepository
+    public interface ICustomerUserRepository
     {
         
     }

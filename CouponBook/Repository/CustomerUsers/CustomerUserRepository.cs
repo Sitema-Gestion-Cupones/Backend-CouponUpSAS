@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CouponBook.Data;
 
-namespace CouponBook.Repository.UpdateLogs
+namespace CouponBook.Repository.CustomerUsers
 {
-    public class UpdateLogRepository : IUpdateLogRepository
+    public class CustomerUserRepository : ICustomerUserRepository
     {
         public readonly CouponBaseContext _context;
         private readonly IMapper _mapper;
 
-        public UpdateLogRepository(CouponBaseContext context,  IMapper mapper)
+        public CustomerUserRepository(CouponBaseContext context,  IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

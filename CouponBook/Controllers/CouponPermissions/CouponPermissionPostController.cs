@@ -2,11 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CouponBook.Services.CouponPermissions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CouponBook.Controllers.CouponPermissions
 {
-    public class CouponPermissionPostController
-    {
+    public class CouponPermissionPostController : ControllerBase
+    {   
+        public readonly ICouponPermissionService _couponPermissionService;
+        public CouponPermissionPostController(ICouponPermissionService couponPermissionService){
+            _couponPermissionService = couponPermissionService;
+        }
         
     }
 }
