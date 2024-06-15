@@ -13,13 +13,14 @@ namespace CouponBook.Data
             
         }
 
-        public DbSet<Cupon> Cupones { get; set; }
-        public DbSet<Factura> Facturas { get; set; }
-        public DbSet<PermisoCupon> PermisosCupones { get; set; }
-        public DbSet<Redencion> Redenciones { get; set; }
-        public DbSet<RegistroActualizacion> RegistrosActualizaciones { get; set; }
-        public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<UsuarioMarketing> UsuariosMarketing { get; set; }
+        public DbSet<CouponPermission> CouponPermissions { get; set; }
+        public DbSet<Coupon> Coupons { get; set; }
+        public DbSet<CustomerUser> CustomerUsers { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<MarketingUser> MarketingUsers { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
+        public DbSet<Redemtion> Redemtions { get; set; }
+        public DbSet<UpdateLog> UpdateLogs { get; set; }
     }
     
 }
