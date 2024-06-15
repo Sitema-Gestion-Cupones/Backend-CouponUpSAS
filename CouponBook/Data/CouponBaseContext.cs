@@ -19,7 +19,7 @@ namespace CouponBook.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<MarketingUser> MarketingUsers { get; set; }
         public DbSet<Purchase> Purchases { get; set; }
-        public DbSet<Redemtion> Redemtions { get; set; }
+        public DbSet<Redemption> Redemptions { get; set; }
         public DbSet<UpdateLog> UpdateLogs { get; set; }
     }
     

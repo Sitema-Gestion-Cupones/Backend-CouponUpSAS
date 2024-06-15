@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CouponBook.Models
 {
-    public class Redemtion
+    public interface Redemption
     {
         
     }

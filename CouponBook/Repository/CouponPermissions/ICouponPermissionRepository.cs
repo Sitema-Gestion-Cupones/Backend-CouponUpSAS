@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CouponBook.Repository.CouponPermissions
 {
-    public interface ICouponPermissionsRepository
+    public interface ICouponPermissionRepository
     {
         
     }

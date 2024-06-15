@@ -2,11 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CouponBook.Services.MarketingUsers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CouponBook.Controllers.MarketingUsers
 {
-    public class MarketingUserPostController
-    {
+    public class MarketingUserPostController : ControllerBase
+    {   
+        public readonly IMarketingUserService _marketingUserService;
+        public MarketingUserPostController(IMarketingUserService marketingUserService){
+            _marketingUserService = marketingUserService;
+        }
         
     }
 }
