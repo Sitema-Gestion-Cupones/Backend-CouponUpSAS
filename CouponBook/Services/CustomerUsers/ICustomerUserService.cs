@@ -10,6 +10,5 @@ namespace CouponBook.Services.CustomerUsers
     public interface ICustomerUserService
     {
         Task<ResponseUtils<CustomerUserSignupDto>> customerUserSignup(CustomerUserSignupDto customerUserSignupDto);
-        
     }
 }
