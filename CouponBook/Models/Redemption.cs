@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CouponBook.Models
 {
-    public interface Redemption
+    public class Redemption
     {
         public int Id { get; set;}
         public int CouponId { get; set;}
@@ -15,11 +15,11 @@ namespace CouponBook.Models
         public int PurchaseId { get; set;}
 
 
-
-        public Coupon Coupons { get; set; }
-        public CustomerUser CustomerUsers { get; set; }
-        public Purchase Purchases { get; set; }
-        public ICollection<Invoice> Invoices { get; set; }
+        // Relación entre Entidades
+        public Coupon? Coupons { get; set; }
+        public CustomerUser? CustomerUsers { get; set; }
+        public Purchase? Purchases { get; set; }
+        public ICollection<Invoice>? Invoices { get; set; }
 
         
     }

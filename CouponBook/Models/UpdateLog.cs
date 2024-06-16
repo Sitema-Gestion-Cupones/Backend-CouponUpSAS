@@ -17,6 +17,7 @@ namespace CouponBook.Models
         public string? Newvalue { get; set;}
 
 
+        // Relación entre Entidades
         public MarketingUser? MarketingUsers { get; set;}
         public Coupon? Coupons { get; set;}
 

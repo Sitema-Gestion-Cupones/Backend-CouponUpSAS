@@ -25,8 +25,9 @@ namespace CouponBook.Models
         public Decimal? ValueFrom { get; set; }
         public int MaxRedemptionsPerUser { get; set; }
 
-        public MarketingUser? MarketingUser { get; set; }
 
+        // Relación entre Entidades
+        public MarketingUser? MarketingUser { get; set; }
         public ICollection<CouponPermission>? CouponPermissions { get; set; }
         public ICollection<Redemption>? Redemptions { get; set; }
         public ICollection<UpdateLog>? UpdateLogs { get; set; }

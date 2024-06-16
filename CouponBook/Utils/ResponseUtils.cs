@@ -18,6 +18,9 @@ namespace CouponBook.Utils
             Message = message;
             Errors = errors ?? new List<T>();
         }
-        
+
+        public ResponseUtils()
+        {
+        }
     }
 }

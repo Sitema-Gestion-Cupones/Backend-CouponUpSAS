@@ -25,8 +25,8 @@ using CouponBook.Services.MarketingUsers;
 using CouponBook.Services.Purchases;
 using CouponBook.Services.Redemptions;
 using CouponBook.Services.UpdateLogs;
-
-
+using CouponBook.Services.Emails;
+using CouponBook.Custom;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -36,7 +36,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Agreagndo servicios para contraseña
-//builder.Services.AddSingleton<>();
+builder.Services.AddSingleton<Utilities>();
 
 // Configuración JWT
 builder.Services.AddAuthentication(config => {
@@ -53,7 +53,8 @@ builder.Services.AddAuthentication(config => {
             ValidateAudience = false,
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
         };
     }
 
@@ -72,7 +73,7 @@ builder.Services.AddControllers()
 //Agregando servicios para mapear dto
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAutoMapper(typeof(CustomUserProfile));
 
 builder.Services.AddDbContext<CouponBaseContext>(options => 
     options.UseMySql(
@@ -81,7 +82,15 @@ builder.Services.AddDbContext<CouponBaseContext>(options =>
     )
 );
 
+
+// Agregando Servicios para envio de Correo
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+
+// Agregando Transient
+builder.Services.AddTransient<IEmailService, EmailService>();
+//Por cada envio de correo se debe agregar la interfases y el repositorio
+//builder.Services.AddTransient<ICitaRepository, CitaRepository>();
 
 
 // Agregando Scoped Repository

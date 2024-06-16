@@ -11,7 +11,8 @@ namespace CouponBook.Models
         public Decimal Value { get; set; }
         public int CustomerUsersId { get; set; }
 
-        
+
+        // Relación entre Entidades       
         public CustomerUser? CustomerUsers { get; set; }
         public Redemption? Redemptions { get; set; }
         
