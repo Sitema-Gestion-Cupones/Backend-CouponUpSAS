@@ -25,6 +25,7 @@ using CouponBook.Services.MarketingUsers;
 using CouponBook.Services.Purchases;
 using CouponBook.Services.Redemptions;
 using CouponBook.Services.UpdateLogs;
+using CouponBook.Services.Emails;
 
 
 
@@ -81,7 +82,15 @@ builder.Services.AddDbContext<CouponBaseContext>(options =>
     )
 );
 
+
+// Agregando Servicios para envio de Correo
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+
+
+// Agregando Transient
+builder.Services.AddTransient<IEmailService, EmailService>();
+//Por cada envio de correo se debe agregar la interfases y el repositorio
+//builder.Services.AddTransient<ICitaRepository, CitaRepository>();
 
 
 // Agregando Scoped Repository

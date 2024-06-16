@@ -12,7 +12,7 @@ namespace CouponBook.Models
         public string? Description { get; set; }
         public Decimal Price { get; set; }
         public int CustomerUserId { get; set; }
-        public int RedemptionsId { get; set; }
+        public int RedemptionId { get; set; }
 
 
         public CustomerUser? CustomerUser { get; set; }
