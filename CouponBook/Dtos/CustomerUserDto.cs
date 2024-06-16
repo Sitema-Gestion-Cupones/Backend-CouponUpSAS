@@ -5,8 +5,21 @@ using System.Threading.Tasks;
 
 namespace CouponBook.Dtos
 {
-    public class CustomerUserDto
+
+    // Dto  para que nuestro Usuario pueda ingresar a nuestra Api
+    public class CustomerUserLoginDto
     {
-        
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+    }
+
+
+    // Dto  para que nuestro Usuario pueda registrarse a nuestra Api
+    public class CustomerUserSignupDto
+    {
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public DateOnly DateBirth { get; set; }
+        public string? Password { get; set; }
     }
 }

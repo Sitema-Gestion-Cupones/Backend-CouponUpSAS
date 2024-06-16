@@ -13,7 +13,7 @@ namespace CouponBook.Models
         public int MarketingUserId { get; set;}
 
 
-
+        // Relación entre Entidades
         public Coupon? Coupon { get; set;} 
         public MarketingUser? MarketingUser { get; set;} 
         
