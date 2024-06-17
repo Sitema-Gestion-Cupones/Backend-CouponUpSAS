@@ -7,7 +7,7 @@ using CouponBook.Dtos;
 namespace CouponBook.Services.UpdateLogs
 {
     public interface IUpdateLogService{
-        Task UpdateCouponAsync(int id, CouponUpdateDto updateDto);
+        Task UpdateCouponAsync(int id, CouponUpdateDto updateDto, string pcode);
         Task UpdateCouponStatusAsync(int id, CouponStatusUpdateDto statusDto);
         
     }

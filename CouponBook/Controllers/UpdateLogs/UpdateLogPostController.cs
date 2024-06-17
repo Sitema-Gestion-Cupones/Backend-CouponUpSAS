@@ -18,9 +18,9 @@ namespace CouponBook.Controllers.UpdateLogs
     [HttpPatch]
     [Route("api/coupon/body/{id}")]
 
-    public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponUpdateDto updateDto){
+    public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponUpdateDto updateDto, string pcode){
         try{
-            await _updateLogService.UpdateCouponAsync(id, updateDto);
+            await _updateLogService.UpdateCouponAsync(id, updateDto, pcode);
             return NoContent();
         }
         catch (KeyNotFoundException)
