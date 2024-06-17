@@ -18,12 +18,14 @@ namespace CouponBook.Services.CouponPermissions
         public readonly GetMarketingId _marketingId;
 
         private readonly IEmailService _emailService;
-        public CouponPermissionService(ICouponPermissionRepository couponPermissionService, CouponBaseContext context, GetMarketingId marketingId, IEmailService emailService)
+        private readonly GeneradorDeCodigos _codeGenerator;
+        public CouponPermissionService(GeneradorDeCodigos codeGenerator,ICouponPermissionRepository couponPermissionService, CouponBaseContext context, GetMarketingId marketingId, IEmailService emailService)
         {
             _couponPermissionService = couponPermissionService;
             _context = context;
             _marketingId = marketingId;
             _emailService = emailService;
+            _codeGenerator =codeGenerator;
         }
 
         public async Task CreatePermissionAsync(CouponPermissionDto couponPermissionDto)
@@ -52,7 +54,7 @@ namespace CouponBook.Services.CouponPermissions
             bool codeExists;
             do
             {
-                code = CodigoPermiso();
+                code = _codeGenerator.CodigoPermiso();
                 codeExists = await _context.CouponPermissions.AnyAsync(cp => cp.Code == code);
             } while (codeExists);
 
@@ -123,19 +125,6 @@ namespace CouponBook.Services.CouponPermissions
             }).ToList();
         }
 
-        public string CodigoPermiso()
-        {
-            Random random = new Random();
-            char[] code = new char[5];
-
-            for (int i = 0; i < 5; i++)
-            {
-                code[i] = random.Next(2) == 0
-                    ? (char)random.Next(97, 123) // Letras minúsculas en ASCII
-                    : (char)random.Next(48, 58); // Números del 0 al 9 en ASCII
-            }
-
-            return new string(code);
-        }
+       
     }
 }

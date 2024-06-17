@@ -7,7 +7,7 @@ namespace CouponBook.Utils
 {
     public class GetMarketingId
     {
-         public int GetId(){
+        public int GetId(){
             int MarketingId =2;
             //se decodifica el token para extraer el ID
             
