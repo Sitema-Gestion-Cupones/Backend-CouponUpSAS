@@ -27,6 +27,7 @@ using CouponBook.Services.Redemptions;
 using CouponBook.Services.UpdateLogs;
 using CouponBook.Services.Emails;
 using CouponBook.Custom;
+using CouponBook.Utils;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -90,7 +91,7 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 // Agregando Transient
 builder.Services.AddTransient<IEmailService, EmailService>();
 //Por cada envio de correo se debe agregar la interfases y el repositorio
-//builder.Services.AddTransient<ICitaRepository, CitaRepository>();
+builder.Services.AddTransient<ICouponPermissionService, CouponPermissionService>();
 
 
 // Agregando Scoped Repository
@@ -102,6 +103,7 @@ builder.Services.AddScoped<IMarketingUserRepository, MarketingUserRepository>();
 builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IRedemptionRepository, RedemptionRepository>();
 builder.Services.AddScoped<IUpdateLogRepository, UpdateLogRepository>();
+builder.Services.AddScoped<GetMarketingId>();
 
 
 // Agregando Scoped Services
