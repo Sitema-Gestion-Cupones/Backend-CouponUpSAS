@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CouponBook.Repository.CouponPermissions;
@@ -13,29 +12,49 @@ using CouponBook.Services.Emails;
 namespace CouponBook.Services.CouponPermissions
 {
     public class CouponPermissionService : ICouponPermissionService
-    {    
+    {
         public readonly ICouponPermissionRepository _couponPermissionService;
-        public readonly CouponBaseContext  _context;
-        public readonly GetMarketingId     _marketingId;
+        public readonly CouponBaseContext _context;
+        public readonly GetMarketingId _marketingId;
 
         private readonly IEmailService _emailService;
-        public CouponPermissionService(ICouponPermissionRepository couponPermissionService, CouponBaseContext  context,GetMarketingId marketingId,IEmailService emailService){
+        public CouponPermissionService(ICouponPermissionRepository couponPermissionService, CouponBaseContext context, GetMarketingId marketingId, IEmailService emailService)
+        {
             _couponPermissionService = couponPermissionService;
             _context = context;
-            _marketingId= marketingId;
+            _marketingId = marketingId;
             _emailService = emailService;
         }
 
-         public async Task CreatePermissionAsync(CouponPermissionDto couponPermissionDto){
-            // verificar que el codigo de permiso no exita en la base de datos 
+        public async Task CreatePermissionAsync(CouponPermissionDto couponPermissionDto)
+        {
+            var coupon = await _context.Coupons
+                .Include(c => c.MarketingUser)
+                .FirstOrDefaultAsync(c => c.Id == couponPermissionDto.CouponId);
+
+            if (coupon == null)
+            {
+                throw new Exception($"El cupón con ID {couponPermissionDto.CouponId} no existe.");
+            }
+
+            var creatorStatus = await _context.MarketingUsers
+                .Where(mu => mu.Id == coupon.MarketingUserId)
+                .Select(mu => mu.Status)
+                .FirstOrDefaultAsync();
+
+            if (creatorStatus == "active")
+            {
+                throw new Exception($"El usuario de marketing creador del cupón está activo, no se puede otorgar el permiso.");
+            }
+
+            // verificar que el código de permiso no exista en la base de datos 
             string code;
             bool codeExists;
             do
             {
                 code = CodigoPermiso();
                 codeExists = await _context.CouponPermissions.AnyAsync(cp => cp.Code == code);
-
-            } while (codeExists==true);
+            } while (codeExists);
 
             int marketingLogId = _marketingId.GetId();
 
@@ -43,56 +62,37 @@ namespace CouponBook.Services.CouponPermissions
             {
                 CouponId = couponPermissionDto.CouponId,
                 MarketingUserId = marketingLogId,
-                Code = code 
+                Code = code
             };
 
             _context.CouponPermissions.Add(couponPermission);
             await _context.SaveChangesAsync();
 
-            //una vez creado se envi un correo con el codigo 
-            var marketingUser = _context.MarketingUsers.Find(marketingLogId);
-            
+            // una vez creado se envía un correo con el código 
+            var marketingUser = await _context.MarketingUsers.FindAsync(marketingLogId);
 
             if (marketingUser != null)
             {
-                var subject = "Codigo de permiso";
-                var marketingUsermessage = $"Hola {marketingUser.Name},\n tu código para generar acualizaciones en el cupón {couponPermissionDto.CouponId} es {code}.";
+                var subject = "Código de permiso";
+                var marketingUsermessage = $"Hola {marketingUser.Name},\n tu código para generar actualizaciones en el cupón {couponPermissionDto.CouponId} es {code}.";
 
                 _emailService.SendEmail(marketingUser.Email, subject, marketingUsermessage);
-                
             }
-            
         }
 
-        public string CodigoPermiso(){
-
+        public string CodigoPermiso()
+        {
             Random random = new Random();
-            string codeString = "";
-            // se declara un arrego de char de tamaño 5 (maximo permitido en la base de datso)
             char[] code = new char[5];
 
-            for (int i = 0; i < 5; i++){
-
-                if (random.Next(2) == 0){ //si el numero que eligió es par 
-                
-                    // convierto  a char un numero que reprecenta las letras minucualas en ascii
-                    code[i] = (char)random.Next(97, 123); 
-                }
-                else{
-                
-                    //  convierto  a char un numero que reprecenta numeros del 0 al 9 n ascii
-                    code[i] = (char)random.Next(48, 58);
-                }
-            }
-            // convierto el arreglo de char en string porque es el tpo de dato que retrna la funcioón
-            foreach(var letter in code){
-                codeString += letter;
+            for (int i = 0; i < 5; i++)
+            {
+                code[i] = random.Next(2) == 0
+                    ? (char)random.Next(97, 123) // Letras minúsculas en ASCII
+                    : (char)random.Next(48, 58); // Números del 0 al 9 en ASCII
             }
 
-
-        return codeString;
-
+            return new string(code);
         }
-        
     }
 }
