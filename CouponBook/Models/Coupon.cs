@@ -19,7 +19,7 @@ namespace CouponBook.Models
         public int RedemptionCount { get; set; }
         public int MaxRedemptions { get; set; }
         public string? DiscountType { get; set; }
-        public Decimal DiscountVulue { get; set; }
+        public Decimal DiscountValue { get; set; }
         public DateTime UpdateDate { get; set; }
         public string? Category { get; set; }
         public Decimal? ValueFrom { get; set; }

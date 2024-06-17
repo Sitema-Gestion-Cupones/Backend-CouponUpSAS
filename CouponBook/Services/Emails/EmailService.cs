@@ -30,6 +30,5 @@ namespace CouponBook.Services.Emails
                 client.Disconnect(true);
             }
         }
-        
     }
 }
