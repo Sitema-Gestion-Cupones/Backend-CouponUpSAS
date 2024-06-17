@@ -28,6 +28,9 @@ using CouponBook.Services.UpdateLogs;
 using CouponBook.Services.Emails;
 using CouponBook.Custom;
 using CouponBook.Utils;
+using FluentValidation.AspNetCore;
+using FluentValidation;
+using CouponBook.Validators;
 
 var builder = WebApplication.CreateBuilder(args); 
 
@@ -92,6 +95,11 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddTransient<IEmailService, EmailService>();
 //Por cada envio de correo se debe agregar la interfases y el repositorio
 builder.Services.AddTransient<ICouponPermissionService, CouponPermissionService>();
+
+
+// Servicios para validar
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CustomerUserSignupValidator>();
 
 
 // Agregando Scoped Repository

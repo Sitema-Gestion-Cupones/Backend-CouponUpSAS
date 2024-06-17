@@ -23,7 +23,12 @@ namespace CouponBook.Services.CustomerUsers
             if(customerUser != null)
             {
                 // Retorno de la respuesta éxitosa con la estructura de la clase 'ResponseUtils':
-                 return new ResponseUtils<CustomerUserSignupDto>(true, new List<CustomerUserSignupDto>{customerUser}, null!, 201, message: "¡Registro Exitoso!");
+                return new ResponseUtils<CustomerUserSignupDto>(true, new List<CustomerUserSignupDto>{customerUser}, null!, 201, message: "¡Registro Exitoso!");
+            }
+            else if(customerUser.Email == customerUser.Email)
+            {
+                return new ResponseUtils<CustomerUserSignupDto>(true, null!, null!, 500, message: "¡El campo Name es neceesario!");
+
             }
             else
             {
