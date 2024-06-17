@@ -62,7 +62,8 @@ namespace CouponBook.Services.CouponPermissions
             {
                 CouponId = couponPermissionDto.CouponId,
                 MarketingUserId = marketingLogId,
-                Code = code
+                Code = code,
+                RequestDate = DateTime.Now
             };
 
             _context.CouponPermissions.Add(couponPermission);
@@ -78,6 +79,29 @@ namespace CouponBook.Services.CouponPermissions
 
                 _emailService.SendEmail(marketingUser.Email, subject, marketingUsermessage);
             }
+        }
+       public async Task<List<CouponGetPermissionDto>> GetPermissionsByRequestDateAsync(DateTime requestDate){
+            if (requestDate.Date > DateTime.Now.Date){
+
+                 throw new Exception("La fecha solicitada no puede ser superior a la de hoy");
+            }
+            
+            var permissions = await _context.CouponPermissions
+                .Where(cp => cp.RequestDate.Date == requestDate.Date)
+                .Include(cp => cp.MarketingUser)
+                .Include(cp => cp.Coupon)
+                .ToListAsync();
+
+            return permissions.Select(cp => new CouponGetPermissionDto
+            {
+                Id = cp.Id,
+                Code = cp.Code,
+                CouponId = cp.CouponId,
+                MarketingUserId = cp.MarketingUserId,
+                RequestDate = cp.RequestDate,
+                MarketingUserName = cp.MarketingUser?.Name,
+                CouponCode = cp.Coupon?.Code
+            }).ToList();
         }
 
         public string CodigoPermiso()

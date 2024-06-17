@@ -11,6 +11,7 @@ namespace CouponBook.Models
         public string? Code { get; set;}
         public int CouponId { get; set;}
         public int MarketingUserId { get; set;}
+        public DateTime RequestDate { get; set; } 
 
 
         // Relación entre Entidades

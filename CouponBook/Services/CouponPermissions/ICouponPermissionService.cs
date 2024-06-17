@@ -10,5 +10,6 @@ namespace CouponBook.Services.CouponPermissions
     public interface ICouponPermissionService
     {
         Task CreatePermissionAsync(CouponPermissionDto couponPermissionDto);
+        Task<List<CouponGetPermissionDto>> GetPermissionsByRequestDateAsync(DateTime requestDate);
     }
 }
