@@ -7,9 +7,9 @@ using CouponBook.Dtos;
 
 namespace CouponBook.Services.CouponPermissions
 {
-    public interface ICouponPermissionService
-    {
+    public interface ICouponPermissionService{
         Task CreatePermissionAsync(CouponPermissionDto couponPermissionDto);
         Task<List<CouponGetPermissionDto>> GetPermissionsByRequestDateAsync(DateTime requestDate);
+        Task<List<CouponGetPermissionDto>> GetPermissionsByUserIdAsync(int userId);
     }
 }

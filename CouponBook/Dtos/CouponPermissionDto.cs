@@ -13,7 +13,7 @@ namespace CouponBook.Dtos
         
     }
     // deto para traer datos
-     public class CouponGetPermissionDto
+     public class CouponGetPermissionDto 
     {
         public int Id { get; set; }
         public string Code { get; set; }
