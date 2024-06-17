@@ -103,6 +103,25 @@ namespace CouponBook.Services.CouponPermissions
                 CouponCode = cp.Coupon?.Code
             }).ToList();
         }
+        public async Task<List<CouponGetPermissionDto>> GetPermissionsByUserIdAsync(int userId)
+        {
+            var permissions = await _context.CouponPermissions
+                .Where(cp => cp.MarketingUserId == userId)
+                .Include(cp => cp.MarketingUser)
+                .Include(cp => cp.Coupon)
+                .ToListAsync();
+
+            return permissions.Select(cp => new CouponGetPermissionDto
+            {
+                Id = cp.Id,
+                Code = cp.Code,
+                CouponId = cp.CouponId,
+                MarketingUserId = cp.MarketingUserId,
+                RequestDate = cp.RequestDate,
+                MarketingUserName = cp.MarketingUser?.Name,
+                CouponCode = cp.Coupon?.Code
+            }).ToList();
+        }
 
         public string CodigoPermiso()
         {
