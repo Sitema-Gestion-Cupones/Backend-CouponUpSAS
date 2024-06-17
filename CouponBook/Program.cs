@@ -101,6 +101,9 @@ builder.Services.AddTransient<ICouponPermissionService, CouponPermissionService>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CustomerUserSignupValidator>();
 
+//automaper para el perfil de cupones
+builder.Services.AddAutoMapper(typeof(CouponProfile));
+
 
 // Agregando Scoped Repository
 builder.Services.AddScoped<ICouponPermissionRepository, CouponPermissionRepository>();
