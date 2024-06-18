@@ -8,7 +8,7 @@ namespace CouponBook.Services.UpdateLogs
 {
     public interface IUpdateLogService{
         Task UpdateCouponAsync(int id, CouponUpdateDto updateDto, string pcode);
-        Task UpdateCouponStatusAsync(int id, CouponStatusUpdateDto statusDto);
+        Task UpdateCouponStatusAsync(int id, CouponStatusUpdateDto statusDto, string pcode);
         
     }
 }
