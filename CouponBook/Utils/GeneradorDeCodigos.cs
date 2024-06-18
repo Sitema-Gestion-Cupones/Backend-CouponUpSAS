@@ -27,5 +27,6 @@ namespace CouponBook.Utils
             return new string(code);
         }
         
+        
     }
 }
