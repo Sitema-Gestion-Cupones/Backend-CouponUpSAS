@@ -1,9 +1,9 @@
-// Importa los espacios de nombres necesarios para el proyecto
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CouponBook.Dtos; // Importa las definiciones de los DTOs
+using CouponBook.Dtos; 
 using CouponBook.Services.Redemptions; // Importa el servicio de redenciones
 using Microsoft.AspNetCore.Mvc; // Importa funcionalidades para controladores de MVC
 
@@ -21,7 +21,7 @@ namespace CouponBook.Controllers.Redemptions // Define el espacio de nombres par
             _redemptionService = redemptionService;
         }
 
-        // Define un método de acción HTTP POST para crear una nueva redención
+        
         [HttpPost]
         [Route("api/redemptions/create")]
         public async Task<IActionResult> RedeemCoupon(int couponId, int customerUserId, int purchaseId){

@@ -1,17 +1,16 @@
-// Importa los espacios de nombres necesarios para el proyecto
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CouponBook.Services.Redemptions; // Importa el servicio de redenciones
-using Microsoft.AspNetCore.Mvc; // Importa funcionalidades para controladores de MVC
+using CouponBook.Services.Redemptions; 
+using Microsoft.AspNetCore.Mvc; 
 
-namespace CouponBook.Controllers.Redemptions // Define el espacio de nombres para el controlador de redenciones
-{
-    // Define un controlador API para gestionar operaciones de obtención de redenciones
+namespace CouponBook.Controllers.Redemptions{
+   
     public class RedemptionGetController : ControllerBase
     {   
-        // Declara una propiedad solo de lectura para el servicio de redenciones
+       
         public readonly IRedemptionService _redemptionService;
 
         // Constructor que recibe una implementación del servicio de redenciones y la asigna a la propiedad
@@ -20,13 +19,11 @@ namespace CouponBook.Controllers.Redemptions // Define el espacio de nombres par
             _redemptionService = redemptionService;
         }
 
-        // Define un método de acción HTTP GET para obtener una redención por su ID
+        
         [HttpGet("api/redemptions/id")]
-        public async Task<IActionResult> GetRedemptionById(int id)
-        {
-            try
-            {
-                // Llama al servicio para obtener la redención por ID de forma asincrónica
+        public async Task<IActionResult> GetRedemptionById(int id){
+            try{
+                
                 var redemption = await _redemptionService.GetRedemptionByIdAsync(id);
                 
                 // Si la redención no se encuentra, retorna un resultado NotFound (404)
@@ -35,7 +32,7 @@ namespace CouponBook.Controllers.Redemptions // Define el espacio de nombres par
                     return NotFound($"Redemption with ID {id} not found.");
                 }
                 
-                // Si la redención se encuentra, retorna un resultado OK (200) con la redención
+                
                 return Ok(redemption);
             }
             catch (ArgumentException ex)
@@ -71,8 +68,7 @@ namespace CouponBook.Controllers.Redemptions // Define el espacio de nombres par
 
         // Define un método de acción HTTP GET para obtener redenciones por fecha
         [HttpGet("api/redemptions/{date}")]
-        public async Task<IActionResult> GetRedemptionsByDate(DateTime date)
-        {
+        public async Task<IActionResult> GetRedemptionsByDate(DateTime date){
             try
             {
                 // Llama al servicio para obtener las redenciones por fecha de forma asincrónica
