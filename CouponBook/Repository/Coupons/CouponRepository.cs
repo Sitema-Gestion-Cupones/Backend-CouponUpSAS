@@ -32,46 +32,52 @@ namespace CouponBook.Repository.Coupons
         {
             return await _context.Coupons.AnyAsync(c => c.Code == code);
         }
-
-        public async Task AddCoupon(CouponDto coupon)
+        /*======================= CREACION DE LOS CUPONES ==============================*/
+        public async Task AddCoupon(CouponCreateDto coupon)
         {
+            /*Validaciones*/
+
             // Validacion de existencia de codigo 
             if (await CouponExists(coupon.Code))
             {
                 throw new Exception("El código de cupón ya existe");
             }
 
+
             int GetIdMarkeing = _getMarketingId.GetId();
 
-
+            /*==== asignacion de valores al objeto tipo cupon ====*/
            var NewCoupon = new Coupon
            {
                 Name = coupon.Name,
                 Code = coupon.Code,
                 Description = coupon.Description,
-                CreationDate = DateTime.Now,
                 ActivationDate = coupon.ActivationDate,
                 EndDate = coupon.EndDate,
-                MarketingUserId = GetIdMarkeing,
-                Status = "inactive",
-                RedemptionCount = 0,
                 MaxRedemptions = coupon.MaxRedemptions,
                 DiscountType = coupon.DiscountType, // hacerle una validacion de que si ingrese porcentual o neto "percentage y net "
                 DiscountValue = coupon.DiscountValue,
-                UpdateDate = DateTime.Now,
                 Category = coupon.Category,
                 ValueFrom = coupon.ValueFrom,
-                MaxRedemptionsPerUser = coupon.MaxRedemptionsPerUser   
+                MaxRedemptionsPerUser = coupon.MaxRedemptionsPerUser,
+
+                // Default values  
+                MarketingUserId = GetIdMarkeing,
+                Status = "inactive",
+                UpdateDate = DateTime.Now,
+                RedemptionCount = 0,
+                CreationDate = DateTime.Now,
             };  
 
             await _context.Coupons.AddAsync(NewCoupon);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+            
         }
 
         /*================= LISTAR TODOS LOS CUPONES ===================*/
         public IEnumerable<Coupon> GetAllCoupons()
         {
-            return _context.Coupons.ToList();
+            return _context.Coupons.Include(m => m.MarketingUser).ToList();
         }
 
     }

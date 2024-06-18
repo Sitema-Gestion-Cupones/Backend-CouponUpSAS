@@ -10,7 +10,7 @@ namespace CouponBook.Repository.Coupons
     public interface ICouponRepository
     {
         Task<bool> CouponExists(string code);
-        Task AddCoupon(CouponDto coupon);
+        Task AddCoupon(CouponCreateDto coupon);
         IEnumerable<Coupon> GetAllCoupons();
     }
 }
