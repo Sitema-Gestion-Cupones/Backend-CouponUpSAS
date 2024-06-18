@@ -11,7 +11,7 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
     public interface IRedemptionService
     {
         // Define un método asincrónico para crear una nueva redención
-        Task<RedemptionCreateDto> CreateRedemptionAsync(RedemptionCreateDto redemptionDto);
+        Task RedeemCouponAsync(int couponId, int customerUserId, int purchaseId);
 
         // Define un método asincrónico para obtener una redención por su ID
         Task<RedemptionIdDto> GetRedemptionByIdAsync(int id);

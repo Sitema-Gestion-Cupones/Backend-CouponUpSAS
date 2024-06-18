@@ -20,20 +20,12 @@ namespace CouponBook.Dtos
     // DTO para listar todas las redenciones y obtener una por ID
     public class RedemptionIdDto
     {
-        // Identificador único de la redención
-        public int Id { get; set; }
-
-        // Identificador del cupón que se está redimiendo
-        public int CouponId { get; set; }
-
-        // Identificador del usuario cliente que realizó la redención
-        public int CustomerUserId { get; set; }
-
-        // Valor final con descuento aplicado
-        public Decimal FinalValueWithDiscount { get; set; }
-
-        // Identificador de la compra asociada a la redención
-        public int PurchaseId { get; set; }
+         
+        public int CouponId { get; set;}
+        public int CustomerUserId { get; set;}
+        public DateTime RedemptionDate { get; set;}
+        public Decimal FinalValueWithDiscount { get; set;}
+        public int PurchaseId { get; set;}
     }
 
     // DTO para listar todas las redenciones por fecha

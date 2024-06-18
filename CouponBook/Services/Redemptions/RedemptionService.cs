@@ -1,9 +1,12 @@
 // Importa los espacios de nombres necesarios para el proyecto
 using System.Threading.Tasks;
 using AutoMapper; // Importa AutoMapper para mapeo de objetos
+using CouponBook.Data;
 using CouponBook.Dtos; // Importa los DTOs para redenciones
 using CouponBook.Models; // Importa los modelos de datos
 using CouponBook.Repository.Redemptions; // Importa el repositorio de redenciones
+using CouponBook.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace CouponBook.Services.Redemptions // Define el espacio de nombres para el servicio de redenciones
 {
@@ -12,26 +15,93 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
     {
         // Declara una propiedad solo de lectura para el repositorio de redenciones
         private readonly IRedemptionRepository _redemptionRepository;
-        // Declara una propiedad solo de lectura para el mapeo de objetos
-        private readonly IMapper _mapper;
+       
+        private readonly IMapper _mapper; // no usado por ahora 
+        
+        private readonly CouponBaseContext _context;
+        private readonly GeneradorDeCodigos _codigos;
 
-        // Constructor que recibe el repositorio y el mapeador
-        public RedemptionService(IRedemptionRepository redemptionRepository, IMapper mapper)
+        
+        public RedemptionService(GeneradorDeCodigos codigos,CouponBaseContext context,IRedemptionRepository redemptionRepository, IMapper mapper)
         {
             _redemptionRepository = redemptionRepository;
-            _mapper = mapper;
+            _mapper = mapper;//
+            _context = context;
+            _codigos = codigos;
         }
 
-        // Método asincrónico para crear una nueva redención
-        public async Task<RedemptionCreateDto> CreateRedemptionAsync(RedemptionCreateDto redemptionDto)
+    
+       public async Task RedeemCouponAsync(int couponId, int customerUserId, int purchaseId){
+        
+        var purchase = await _context.Purchases.FirstOrDefaultAsync(p => p.Id == purchaseId ); //compra
+
+        if (purchase == null || purchase.CustomerUserId != customerUserId)
         {
-            // Mapea el DTO de creación de redención al modelo de redención
-            var redemption = _mapper.Map<Redemption>(redemptionDto);
-            // Añade la redención al repositorio
-            var addedRedemption = await _redemptionRepository.AddRedemptionAsync(redemption);
-            // Mapea el modelo de redención añadido al DTO de creación de redención
-            return _mapper.Map<RedemptionCreateDto>(addedRedemption);
+            throw new Exception("esta compra no exite o no es de este cliente :'( )");
         }
+
+        var purchaseValue = purchase.Value;
+
+        
+        var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.Id ==couponId); //obtener el cupon
+
+        if (coupon == null)
+        {
+            throw new Exception("cupon no encontrado ");
+        }
+
+        //verificar si se puede usar 
+        if (coupon.Status != "active" || coupon.EndDate < DateTime.Now || coupon.RedemptionCount >= coupon.MaxRedemptions)
+        {
+            throw new Exception("lo siento, no puedes redimir este cupon , verifica el stado, fecha o lmites de este cupòn ");
+        }
+
+        // apliocar el descuento 
+        decimal finalValueWithDiscount;
+        if (coupon.DiscountType == "percentage")
+        {
+            finalValueWithDiscount = purchaseValue - (purchaseValue * (coupon.DiscountValue / 100));
+        }
+        else if (coupon.DiscountType == "net")
+        {
+            finalValueWithDiscount = purchaseValue - coupon.DiscountValue;
+        }
+        else
+        {
+            throw new Exception("verifica si este tipo de descuento exite ");
+        }
+
+    // agregar el registro de redenciones
+        var redemption = new Redemption
+        {
+             CouponId = couponId,
+            CustomerUserId = customerUserId,
+            RedemptionDate = DateTime.Now,
+            FinalValueWithDiscount = finalValueWithDiscount,
+            PurchaseId = purchaseId
+        };
+        await _context.Redemptions.AddAsync(redemption);
+
+       
+        coupon.RedemptionCount++;// se aumenta el uso de cupones 
+        _context.Coupons.Update(coupon);
+        await _context.SaveChangesAsync();
+
+         // Crear la factura
+        var invoice = new Invoice{
+            Code =_codigos.CodigoFactura(),
+            Price = finalValueWithDiscount,
+            CustomerUserId = customerUserId,
+            RedemptionId = redemption.Id 
+        };
+
+        _context.Invoices.Add(invoice);
+        
+        
+
+        // uardar los cambios en la base de datos
+        await _context.SaveChangesAsync();
+    }
 
         // Método asincrónico para obtener una redención por su ID
         public async Task<RedemptionIdDto> GetRedemptionByIdAsync(int id)
