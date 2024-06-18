@@ -116,6 +116,7 @@ builder.Services.AddScoped<IRedemptionRepository, RedemptionRepository>();
 builder.Services.AddScoped<IUpdateLogRepository, UpdateLogRepository>();
 builder.Services.AddScoped<GetMarketingId>();
 builder.Services.AddScoped<GeneradorDeCodigos>();
+builder.Services.AddScoped<Estadisticas>();
 
 // Agregando Scoped Services
 builder.Services.AddScoped<ICouponPermissionService, CouponPermissionService>();

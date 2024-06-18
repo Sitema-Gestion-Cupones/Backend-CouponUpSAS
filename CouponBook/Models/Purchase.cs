@@ -9,7 +9,7 @@ namespace CouponBook.Models
     {
         public int Id { get; set; }
         public Decimal Value { get; set; }
-        public int CustomerUsersId { get; set; }
+        public int CustomerUserId { get; set; }
 
 
         // Relación entre Entidades       

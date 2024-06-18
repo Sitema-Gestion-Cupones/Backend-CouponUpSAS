@@ -13,6 +13,16 @@ namespace CouponBook.Controllers.Redemptions
         public RedemptionPutController(IRedemptionService redemptionService){
             _redemptionService = redemptionService;
         }
+        [HttpPost]
+        [Route("api/reporte/estadistica")]
+        public async Task<IActionResult> GenerarExcelReporte([FromBody] string relativeFilePath){
+            if (string.IsNullOrEmpty(relativeFilePath)){
+                return BadRequest("agrega riuta valida.");
+            }
+
+            await _redemptionService.generarExcelAsync(relativeFilePath);
+        return Ok("El reporte de Excel se ha generado exitosamente.");
+        }
         
     }
 }
