@@ -32,10 +32,8 @@ namespace CouponBook.Controllers.UpdateLogs
 
     [HttpPatch]
     [Route("api/coupon/status/{id}")]
-    public async Task<IActionResult> UpdateCouponStatus(int id, [FromBody] CouponStatusUpdateDto statusDto, string pcode)
-    {
-        try
-        {
+    public async Task<IActionResult> UpdateCouponStatus(int id, [FromBody] CouponStatusUpdateDto statusDto, string pcode){
+        try{
             await _updateLogService.UpdateCouponStatusAsync(id, statusDto, pcode);
             return NoContent();
         }

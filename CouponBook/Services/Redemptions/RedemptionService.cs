@@ -54,9 +54,20 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
         }
 
         //verificar si se puede usar 
-        if (coupon.Status != "active" || coupon.EndDate < DateTime.Now || coupon.RedemptionCount >= coupon.MaxRedemptions)
-        {
+        if (coupon.Status != "active" || coupon.EndDate < DateTime.Now || coupon.RedemptionCount >= coupon.MaxRedemptions){
             throw new Exception("lo siento, no puedes redimir este cupon , verifica el stado, fecha o lmites de este cupòn ");
+        }
+        if (coupon.MaxRedemptionsPerUser >= 0){
+            var userRedemptions = await _context.Redemptions
+                .Where(r => r.CouponId == couponId && r.CustomerUserId == customerUserId)
+                .CountAsync();
+
+            if (userRedemptions >= coupon.MaxRedemptionsPerUser){
+                throw new Exception("No puedes redimir este cupon nuevamente.");
+            }
+        }
+        if (purchaseValue < coupon.ValueFrom){
+                throw new Exception($"El valor de la compra (${purchaseValue}) es menor que el valor mínimo requerido (${coupon.ValueFrom}). No puedes redimir este cupón.");
         }
 
         // apliocar el descuento 
@@ -87,6 +98,10 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
 
        
         coupon.RedemptionCount++;// se aumenta el uso de cupones 
+        if (coupon.RedemptionCount >= coupon.MaxRedemptions){
+            coupon.Status = "inactive";
+            _context.Coupons.Update(coupon);
+        }
         _context.Coupons.Update(coupon);
         await _context.SaveChangesAsync();
 

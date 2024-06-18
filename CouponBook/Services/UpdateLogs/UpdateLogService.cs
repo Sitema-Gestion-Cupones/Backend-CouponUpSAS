@@ -76,6 +76,10 @@ namespace CouponBook.Services.UpdateLogs
             if (coupon == null){
                 throw new KeyNotFoundException($"Coupon with id {id} not found.");
             }
+            //verificar si no ha sido redimido
+            if (coupon.RedemptionCount > 0){
+                throw new InvalidOperationException("No se puede actualizar el cupón porque ya ha sido redimido al menos una vez.");
+            }
             string oldCoupon = ConvertCouponToString(coupon);
 
             var permissionDto = new CouponGetPermissionDto{
