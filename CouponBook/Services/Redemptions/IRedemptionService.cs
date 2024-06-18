@@ -21,5 +21,7 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
 
         // Define un método asincrónico para obtener redenciones por fecha
         Task<IEnumerable<RedemptiondateDto>> GetRedemptionsByDateAsync(DateTime date);
+
+        Task generarExcelAsync(string relativeFilePath);
     }
 }

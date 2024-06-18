@@ -21,13 +21,16 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
         private readonly CouponBaseContext _context;
         private readonly GeneradorDeCodigos _codigos;
 
+        private readonly Estadisticas _estadisticas;
+
         
-        public RedemptionService(GeneradorDeCodigos codigos,CouponBaseContext context,IRedemptionRepository redemptionRepository, IMapper mapper)
+        public RedemptionService( Estadisticas estadisticas,GeneradorDeCodigos codigos,CouponBaseContext context,IRedemptionRepository redemptionRepository, IMapper mapper)
         {
             _redemptionRepository = redemptionRepository;
             _mapper = mapper;//
             _context = context;
             _codigos = codigos;
+            _estadisticas=estadisticas;
         }
 
     
@@ -101,7 +104,14 @@ namespace CouponBook.Services.Redemptions // Define el espacio de nombres para e
 
         // uardar los cambios en la base de datos
         await _context.SaveChangesAsync();
+
+        
     }
+        // estadisticas
+        public async Task generarExcelAsync(string relativeFilePath){
+            
+            _estadisticas.EstadisticasExccel(relativeFilePath);
+        }
 
         // Método asincrónico para obtener una redención por su ID
         public async Task<RedemptionIdDto> GetRedemptionByIdAsync(int id)
