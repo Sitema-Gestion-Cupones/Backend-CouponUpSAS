@@ -17,17 +17,58 @@ namespace CouponBook.Controllers.Coupons
         }
 
         [HttpPost]
-        [Route("/coupons")]
-        public async Task<IActionResult> Createcupon(CouponDto coupon)
+        [Route("/couponscreate")]
+        public async Task<IActionResult> Createcupon(CouponCreateDto coupon)
         {
-            if (coupon == null || string.IsNullOrEmpty(coupon.Code))
+            // Validación de fechas
+            /*if (coupon.ActivationDate < DateTime.Now)
             {
-                return BadRequest(new { Message = "El cupon es requerido" });
+                return BadRequest(new { Message = "La Fecha de Activación no puede ser menor que la fecha actual" });
+            }*/
+
+            // Validación de MaxRedemptions
+            if (coupon.MaxRedemptions <= 0)
+            {
+                return BadRequest(new { Message = "El número máximo de redenciones debe ser mayor que 0" });
             }
+
+            // Validación de MaxRedemptionsPerUser
+            if (coupon.MaxRedemptionsPerUser <= 0)
+            {
+                return BadRequest(new { Message = "El número máximo de redenciones por usuario debe ser mayor que 0" });
+            }
+
+           
+
+            // Validación de DiscountType
+            var validDiscountTypes = new[] { "percentage", "net" };
+            if (!validDiscountTypes.Contains(coupon.DiscountType))
+            {
+                return BadRequest(new { Message = "El tipo de descuento debe ser 'percentage' o 'net'" });
+            }
+
+            // Validación de Category
+            var validCategories = new[] { "first purchase", "seasonal or special events", "offers", "loyalty" };
+            if (!validCategories.Contains(coupon.Category))
+            {
+                return BadRequest(new { Message = "La categoría debe ser 'first purchase', 'seasonal or special events', 'offers' o 'loyalty'" });
+            }
+            
             try
             {
                 await _couponRepository.AddCoupon(coupon);
-                return Ok(new{message = "Cupon Creado exitosamente"});
+                return Ok(new
+                {message = "Cupon Creado exitosamente",
+                    Coupon = new
+                    {
+                        coupon.Name,
+                        coupon.Code,
+                        coupon.Description,
+                        coupon.Category,
+                        coupon.MaxRedemptions
+
+                    }
+                });
             }
             catch (ArgumentException ex)
             {
