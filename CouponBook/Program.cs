@@ -101,6 +101,9 @@ builder.Services.AddTransient<ICouponPermissionService, CouponPermissionService>
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CustomerUserSignupValidator>();
 
+//automaper para el perfil de cupones
+builder.Services.AddAutoMapper(typeof(CouponProfile));
+
 
 // Agregando Scoped Repository
 builder.Services.AddScoped<ICouponPermissionRepository, CouponPermissionRepository>();
@@ -112,7 +115,7 @@ builder.Services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 builder.Services.AddScoped<IRedemptionRepository, RedemptionRepository>();
 builder.Services.AddScoped<IUpdateLogRepository, UpdateLogRepository>();
 builder.Services.AddScoped<GetMarketingId>();
-
+builder.Services.AddScoped<GeneradorDeCodigos>();
 
 // Agregando Scoped Services
 builder.Services.AddScoped<ICouponPermissionService, CouponPermissionService>();

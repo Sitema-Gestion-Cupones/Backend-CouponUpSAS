@@ -15,5 +15,7 @@ namespace CouponBook.Utils
             CreateMap<CustomerUser, CustomerUserLoginDto>();
             CreateMap<CustomerUser, CustomerUserSignupDto>();
        } 
+
+       
     }
 }
